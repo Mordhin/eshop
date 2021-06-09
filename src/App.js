@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Cart } from "./components/Cart";
 import { Filter } from "./components/Filter";
 import { Products } from "./components/Products";
 import data from "./data.json";
@@ -7,6 +8,26 @@ const App = () => {
   const [products, setProducts] = useState(data.products);
   const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+
+  const removeFromCart = (product) => {
+    setCartItems(cartItems.slice().filter((item) => item._id !== product._id));
+  };
+
+  const addToCart = (product) => {
+    let alreadyInCart = false;
+    const newCartItems = cartItems.slice();
+    newCartItems.forEach((item) => {
+      if (item._id === product._id) {
+        item.count++;
+        alreadyInCart = true;
+      }
+    });
+    if (!alreadyInCart) {
+      newCartItems.push({ ...product, count: 1 });
+    }
+    setCartItems(newCartItems);
+  };
 
   const filterProducts = (event) => {
     console.log(event.target.value);
@@ -62,9 +83,11 @@ const App = () => {
             filterProducts={filterProducts}
             sortProducts={sortProducts}
           ></Filter>
-          <Products products={products}></Products>
+          <Products products={products} addToCart={addToCart}></Products>
         </div>
-        <div className="sidebar">Cart Items</div>
+        <div className="sidebar">
+          <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+        </div>
       </main>
       <footer>All right is reserved.</footer>
     </div>
