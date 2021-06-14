@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import { Provider } from "react-redux";
 import { Cart } from "./components/Cart";
-import { Filter } from "./components/Filter";
+import Filter from "./components/Filter";
 import Products from "./components/Products";
-import data from "./data.json";
 import store from './store'
 
 const App = () => {
-  const [products, setProducts] = useState(data.products);
-  const [size, setSize] = useState("");
-  const [sort, setSort] = useState("");
   const [cartItems, setCartItems] = useState(
     localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -44,46 +40,6 @@ const App = () => {
     localStorage.setItem("cartItems", JSON.stringify(newCartItems));
   };
 
-  const filterProducts = (event) => {
-    console.log(event.target.value);
-    if (event.target.value === "") {
-      setSize(event.target.value);
-      setProducts(data.products);
-    } else {
-      setSize(event.target.value);
-      setProducts(
-        data.products.filter(
-          (product) => product.availableSizes.indexOf(event.target.value) >= 0
-        )
-      );
-    }
-  };
-
-  const sortProducts = (event) => {
-    console.log("event" + event.target.value);
-    setSort(event.target.value);
-    switch (event.target.value) {
-      case "Lowest":
-        console.log("1");
-        setProducts((prevProducts) =>
-          prevProducts.slice().sort((a, b) => (a.price > b.price ? 1 : -1))
-        );
-        break;
-      case "Highest":
-        console.log("2");
-        setProducts((prevProducts) =>
-          prevProducts.slice().sort((a, b) => (a.price < b.price ? 1 : -1))
-        );
-        break;
-      default:
-        console.log("3");
-        setProducts((prevProducts) =>
-          prevProducts.slice().sort((a, b) => (a._id > b._id ? 1 : -1))
-        );
-        break;
-    }
-  };
-
   return (
     <Provider store = {store}>
       <div className="grid-container">
@@ -92,14 +48,8 @@ const App = () => {
         </header>
         <main className="content">
           <div className="main">
-            <Filter
-              count={products.length}
-              size={size}
-              sort={sort}
-              filterProducts={filterProducts}
-              sortProducts={sortProducts}
-            ></Filter>
-            <Products products={products} addToCart={addToCart}></Products>
+            <Filter></Filter>
+            <Products addToCart={addToCart}></Products>
           </div>
           <div className="sidebar">
             <Cart
