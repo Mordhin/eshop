@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import Zoom from 'react-reveal/Zoom';
 import { connect, useDispatch } from "react-redux";
 import { fetchProducts } from "../actions/productActions";
+import {addToCart} from "../actions/cartActions";
 
 const Products = (props) => {
   const [productM, setProductM] = useState(null);
@@ -82,4 +83,4 @@ const Products = (props) => {
   );
 };
 
-export default connect((state) => ({products: state.products.filteredItems}), {fetchProducts})(Products);
+export default connect((state) => ({products: state.products.filteredItems}), {fetchProducts, addToCart})(Products);
