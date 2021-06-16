@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import {connect} from 'react-redux';
 import Fade from 'react-reveal/Fade';
+import { removeFromCart } from "../actions/cartActions";
 
-export const Cart = (props) => {
+  const Cart = (props) => {
   const [showCheckout, setShowCheckout] = useState(false);
   const [email, setEmail] = useState("");
   const [alias, setAlias] = useState("");
@@ -135,3 +137,9 @@ export const Cart = (props) => {
     </>
   );
 };
+
+export default connect((state) => ({
+  cartItems: state.cart.cartItems,
+}),
+{removeFromCart}
+)(Cart);
