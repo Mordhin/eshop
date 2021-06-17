@@ -16,7 +16,7 @@ export const addToCart = (product) => (dispatch, getState) => {
     type: ADD_TO_CART,
     payload: {cartItems},
   })
-  localStorage.setItems("cartItems", JSON.stringify(cartItems));
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
 };
 
 export const removeFromCart = (product) => (dispatch, getState) => {
